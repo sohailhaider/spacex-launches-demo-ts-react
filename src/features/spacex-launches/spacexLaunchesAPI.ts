@@ -13,7 +13,7 @@ export const fetchLaunchesFromAPI = async (limit: number = 50): Promise<Launch[]
     return response.data.map(
       (d: any): Launch => ({
         mission_name: d.mission_name,
-        launch_date_unix: d.launch_date_unix,
+        launch_date_utc: d.launch_date_utc,
         details: d.details,
         rocket: d.rocket,
       })

@@ -3,35 +3,48 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { fetchLaunches, selectLaunchesData } from "../spacexLaunchesSlice";
+// import moment from "moment";
 
-const FullWidthCellRenderer = (props: any) => {
-  console.log(props);
-  return <>{props.node.data.make}</>;
-};
+const CellRenderer = (props: any) => <>{JSON.stringify(props.value)}</>;
 
 const LaunchesDataGrid = () => {
-  const rowData = [
-    { make: "Toyota", model: "Celica", price: 35000 },
-    { make: "Ford", model: "Mondeo", price: 32000 },
-    { make: "Porsche", model: "Boxter", price: 72000 },
-  ];
+  const dispatch = useAppDispatch();
+  const launchesData = useAppSelector(selectLaunchesData);
+
+  React.useEffect(() => {
+    dispatch(fetchLaunches());
+  }, [dispatch]);
 
   return (
     <div className="ag-theme-alpine" style={{ height: 400 }}>
       <AgGridReact
-        rowData={rowData}
-        // isFullWidthCell={(params) => true}
+        rowData={launchesData}
         defaultColDef={{
           flex: 1,
-          // sortable: true,
-          resizable: true,
         }}
-        // frameworkComponents={{ fullWidthCellRenderer: FullWidthCellRenderer }}
-        // fullWidthCellRenderer={"fullWidthCellRenderer"}
+        frameworkComponents={{
+          customPinnedRowRenderer: CellRenderer,
+        }}
       >
-        <AgGridColumn field="make" sortable></AgGridColumn>
-        <AgGridColumn field="model"></AgGridColumn>
-        <AgGridColumn field="price"></AgGridColumn>
+        <AgGridColumn
+          headerName="Mission Name"
+          field="mission_name"
+          sortable
+        ></AgGridColumn>
+        <AgGridColumn
+          headerName="Date"
+          field="launch_date_utc"
+          sortable
+        ></AgGridColumn>
+        <AgGridColumn field="details"></AgGridColumn>
+        <AgGridColumn
+          field="rocket"
+          cellRendererSelector={(params) => ({
+            component: "customPinnedRowRenderer",
+          })}
+        ></AgGridColumn>
       </AgGridReact>
     </div>
   );
