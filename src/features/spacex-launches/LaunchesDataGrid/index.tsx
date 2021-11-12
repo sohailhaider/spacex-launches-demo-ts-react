@@ -5,9 +5,10 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { fetchLaunches, selectLaunchesData } from "../spacexLaunchesSlice";
+import RocketDetails from "./RocketDetails";
 // import moment from "moment";
 
-const CellRenderer = (props: any) => <>{JSON.stringify(props.value)}</>;
+const CellRenderer = (props: any) => <RocketDetails {...props.value}/>;
 
 const LaunchesDataGrid = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ const LaunchesDataGrid = () => {
           headerName="Mission Name"
           field="mission_name"
           sortable
+          filter
         ></AgGridColumn>
         <AgGridColumn
           headerName="Date"
