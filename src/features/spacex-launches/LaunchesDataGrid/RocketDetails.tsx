@@ -17,14 +17,13 @@ const style = {
 };
 
 export default function RocketDetails(props: any) {
-  console.log(props);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>View Rocket Details</Button>
+      <Button onClick={handleOpen} data-testid="view-rocket-details-btn">View Rocket Details</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -33,11 +32,11 @@ export default function RocketDetails(props: any) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {props.rocket_name}
+            <span data-testid="rocket-title">{props.rocket_name}</span>
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <label><b>Rocket ID: </b></label><p>{props.rocket_id}</p>
-            <label><b>Rocket Type: </b></label> <p>{props.rocket_type}</p>
+            <label><b>Rocket ID: </b></label>{props.rocket_id}<br />
+            <label><b>Rocket Type: </b></label> {props.rocket_type}<br />
           </Typography>
         </Box>
       </Modal>
